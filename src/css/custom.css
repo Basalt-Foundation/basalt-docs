@@ -1,0 +1,27 @@
+/**
+ * Basalt documentation theme customization.
+ * Built on Infima CSS framework.
+ */
+
+:root {
+  --ifm-color-primary: #4a6fa5;
+  --ifm-color-primary-dark: #426494;
+  --ifm-color-primary-darker: #3e5e8c;
+  --ifm-color-primary-darkest: #334d73;
+  --ifm-color-primary-light: #527ab6;
+  --ifm-color-primary-lighter: #5a82be;
+  --ifm-color-primary-lightest: #7498cc;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #6b9fd4;
+  --ifm-color-primary-dark: #5490cc;
+  --ifm-color-primary-darker: #4889c8;
+  --ifm-color-primary-darkest: #2d72b5;
+  --ifm-color-primary-light: #82aedc;
+  --ifm-color-primary-lighter: #8eb5e0;
+  --ifm-color-primary-lightest: #b5d0ec;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}

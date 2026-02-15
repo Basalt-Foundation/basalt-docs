@@ -1,3 +1,9 @@
+---
+sidebar_position: 1
+title: Design Plan
+description: Complete design plan for the Basalt blockchain platform.
+---
+
 
 
 **BASALT**

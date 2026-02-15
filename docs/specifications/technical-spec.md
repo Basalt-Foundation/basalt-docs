@@ -1,3 +1,9 @@
+---
+sidebar_position: 2
+title: Technical Specification
+description: Full technical specification for the Basalt blockchain protocol.
+---
+
 
 
 **BASALT**
