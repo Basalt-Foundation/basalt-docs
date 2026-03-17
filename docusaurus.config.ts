@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Basalt',
-  tagline: 'Enterprise-Grade Blockchain on .NET 9 AOT',
+  tagline: 'Compliance-Native Layer 1 Blockchain on .NET 9 Native AOT',
   favicon: 'img/favicon.ico',
 
   url: 'https://basalt-foundation.github.io',
@@ -57,6 +57,21 @@ const config: Config = {
           label: 'Documentation',
         },
         {
+          to: '/docs/smart-contracts/overview',
+          label: 'Smart Contracts',
+          position: 'left',
+        },
+        {
+          to: '/docs/apis/rest',
+          label: 'API',
+          position: 'left',
+        },
+        {
+          href: 'https://basalt.foundation',
+          label: 'Website',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/basalt-foundation',
           label: 'GitHub',
           position: 'right',
@@ -67,7 +82,7 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Learn',
           items: [
             {
               label: 'Getting Started',
@@ -84,34 +99,63 @@ const config: Config = {
           ],
         },
         {
-          title: 'Resources',
+          title: 'Develop',
           items: [
             {
-              label: 'Design Plan',
-              to: '/docs/specifications/design-plan',
+              label: 'REST API',
+              to: '/docs/apis/rest',
             },
             {
-              label: 'Technical Spec',
-              to: '/docs/specifications/technical-spec',
+              label: 'CLI Reference',
+              to: '/docs/cli/reference',
+            },
+            {
+              label: 'Token Standards',
+              to: '/docs/smart-contracts/token-standards',
             },
           ],
         },
         {
-          title: 'More',
+          title: 'Community',
           items: [
+            {
+              label: 'Discord',
+              href: 'https://discord.gg/rXpgNRt3RV',
+            },
+            {
+              label: 'X (Twitter)',
+              href: 'https://x.com/basaltEU',
+            },
             {
               label: 'GitHub',
               href: 'https://github.com/basalt-foundation',
             },
           ],
         },
+        {
+          title: 'Resources',
+          items: [
+            {
+              label: 'Website',
+              href: 'https://basalt.foundation',
+            },
+            {
+              label: 'Whitepapers',
+              href: 'https://basalt.foundation/whitepapers',
+            },
+            {
+              label: 'Caldera DEX',
+              href: 'https://caldera.basalt.foundation',
+            },
+          ],
+        },
       ],
-      copyright: `Copyright ${new Date().getFullYear()} Basalt Foundation. Built with Docusaurus.`,
+      copyright: `Copyright ${new Date().getFullYear()} Basalt Foundation.`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['csharp', 'protobuf', 'docker', 'bash', 'json', 'graphql'],
+      additionalLanguages: ['csharp', 'protobuf', 'docker', 'bash', 'json', 'graphql', 'toml', 'yaml'],
     },
     colorMode: {
       defaultMode: 'dark',

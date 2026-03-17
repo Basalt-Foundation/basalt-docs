@@ -1,67 +1,93 @@
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import Heading from '@theme/Heading';
 
-function Feature({title, description}: {title: string; description: string}) {
-  return (
-    <div className={clsx('col col--4')}>
-      <div className="padding-horiz--md padding-vert--lg">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-}
+const stats = [
+  {value: '4s', label: 'Finality'},
+  {value: '7', label: 'Token Standards'},
+  {value: '12', label: 'Analyzers'},
+  {value: '4,000+', label: 'Tests'},
+];
 
 const features = [
   {
-    title: 'Native .NET 9 AOT',
-    description:
-      'Single self-contained binary with no JIT overhead. Sub-millisecond startup, predictable latency, and minimal memory footprint.',
-  },
-  {
+    icon: '{}',
     title: 'C# Smart Contracts',
     description:
-      'Write contracts in familiar C# with strong typing, Roslyn analyzers, and full debugging support in Visual Studio and Rider.',
+      'Write contracts in familiar C# with StorageMap, StorageValue, and StorageList primitives. 12 Roslyn analyzers catch reentrancy, overflows, and non-determinism at compile time.',
   },
   {
-    title: 'Enterprise Compliance',
+    icon: '\u{1F6E1}',
+    title: 'ZK Compliance',
     description:
-      'Built-in KYC/AML, MiCA, and GDPR compliance at the protocol level. Identity registry, sanctions screening, and audit trails.',
+      'Hybrid compliance engine: Groth16 ZK proofs verified first, on-chain attestation fallback. SchemaRegistry for credential schemas, IssuerRegistry with trust tiers.',
   },
   {
-    title: 'Fast Finality',
+    icon: '\u{1F510}',
+    title: 'Confidential Transactions',
     description:
-      'BasaltBFT consensus delivers deterministic finality in 800ms with BLS12-381 signature aggregation and pipelined block production.',
+      'Pedersen commitments on BLS12-381 hide amounts while proving balance validity. 192-byte Groth16 range proofs. X25519 private channels with AES-256-GCM.',
   },
   {
-    title: 'Proven Cryptography',
+    icon: '\u{26A1}',
+    title: '4-Second Finality',
     description:
-      'BLAKE3 hashing (6x faster than SHA-256), Ed25519 signatures, BLS12-381 aggregation, and EVM-compatible Keccak-256 addresses.',
+      'BasaltBFT consensus with pipelined 3-phase commit and BLS12-381 signature aggregation. Stake-weighted leader selection with automatic slashing.',
   },
   {
+    icon: '\u{1F517}',
     title: 'EVM Bridge',
     description:
-      'Bidirectional bridge to Ethereum and Polygon with multisig relayer, Merkle proof verification, and wrapped BST tokens.',
+      'Bidirectional bridge to Ethereum and Polygon with M-of-N Ed25519 multisig relayer and BLAKE3 Merkle proof verification.',
+  },
+  {
+    icon: '\u{1F4CA}',
+    title: 'Protocol-Native DEX',
+    description:
+      'Caldera Fusion: batch auction matching, TWAP oracle, concentrated liquidity, dynamic fees, and EC-ElGamal encrypted intents.',
+  },
+  {
+    icon: '\u{1F3DB}',
+    title: 'On-Chain Governance',
+    description:
+      'Stake-weighted quadratic voting with delegation and timelock execution. Proposals execute cross-contract calls on approval.',
+  },
+  {
+    icon: '\u{1F50D}',
+    title: 'Policy Hooks',
+    description:
+      'Pluggable transfer policies on every token standard. Enforce holding limits, lockups, jurisdiction whitelists, and sanctions screening.',
+  },
+  {
+    icon: '\u{1F3D7}',
+    title: '.NET 9 Native AOT',
+    description:
+      'Single self-contained binary. Predictable latency, no GC pauses during consensus, minimal memory footprint with ahead-of-time compilation.',
   },
 ];
 
+const quickLinks = [
+  {label: 'Installation', to: '/docs/getting-started/installation'},
+  {label: 'Write a Contract', to: '/docs/smart-contracts/getting-started'},
+  {label: 'Run a Node', to: '/docs/node-operations/running-a-node'},
+  {label: 'REST API', to: '/docs/apis/rest'},
+  {label: 'Token Standards', to: '/docs/smart-contracts/token-standards'},
+  {label: 'Docker DevNet', to: '/docs/node-operations/docker-devnet'},
+  {label: 'CLI Reference', to: '/docs/cli/reference'},
+  {label: 'EVM Bridge', to: '/docs/bridge/overview'},
+];
+
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary')} style={{padding: '4rem 0'}}>
+    <header className="hero--basalt">
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div style={{display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem'}}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/">
+        <h1 className="hero__title">Basalt Documentation</h1>
+        <p className="hero__subtitle">
+          Build on the compliance-native Layer 1 blockchain. C# smart contracts,
+          zero-knowledge compliance, confidential transactions, and a protocol-native DEX.
+        </p>
+        <div style={{display: 'flex', gap: '0.75rem', marginTop: '2rem', flexWrap: 'wrap'}}>
+          <Link className="button button--primary button--lg" to="/docs/">
             Get Started
           </Link>
           <Link
@@ -70,28 +96,49 @@ function HomepageHeader() {
             Core Concepts
           </Link>
         </div>
+        <div className="stats-row">
+          {stats.map((s) => (
+            <div key={s.label} className="stat-item">
+              <div className="stat-value">{s.value}</div>
+              <div className="stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </header>
   );
 }
 
 export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
       title="Home"
-      description="Basalt - Enterprise-Grade Layer 1 Blockchain on .NET 9 AOT">
+      description="Basalt — Compliance-Native Layer 1 Blockchain on .NET 9 Native AOT. C# smart contracts, ZK compliance, confidential transactions.">
       <HomepageHeader />
       <main>
-        <section style={{padding: '2rem 0'}}>
-          <div className="container">
-            <div className="row">
-              {features.map((props, idx) => (
-                <Feature key={idx} {...props} />
-              ))}
-            </div>
+        <div className="container">
+          <section className="feature-grid">
+            {features.map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">{f.icon}</div>
+                <h3>{f.title}</h3>
+                <p>{f.description}</p>
+              </div>
+            ))}
+          </section>
+
+          <h2 style={{fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem'}}>
+            Quick Links
+          </h2>
+          <div className="quick-links">
+            {quickLinks.map((link) => (
+              <Link key={link.to} className="quick-link" to={link.to}>
+                {link.label}
+                <span>&rarr;</span>
+              </Link>
+            ))}
           </div>
-        </section>
+        </div>
       </main>
     </Layout>
   );

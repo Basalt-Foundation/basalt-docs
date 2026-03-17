@@ -1,13 +1,22 @@
 ---
 sidebar_position: 2
 title: Quickstart
+description: Run a standalone Basalt node, spin up a 4-validator devnet, and execute your first transactions.
 ---
 
 # Quickstart
 
-This guide walks you through running a single Basalt node in standalone mode and deploying a full 4-validator devnet using Docker Compose.
+This guide walks you through running a Basalt node, interacting with the REST API, and using the CLI to create accounts and send transactions.
 
-## Run a Local Node
+## 1. Build the Project
+
+Ensure the solution is built before running any commands:
+
+```bash
+dotnet build
+```
+
+## 2. Run a Standalone Node
 
 Start a single Basalt node in standalone development mode:
 
@@ -17,26 +26,76 @@ dotnet run --project src/node/Basalt.Node
 
 The node starts with the following defaults:
 
-| Parameter   | Value                |
-|-------------|----------------------|
-| Chain ID    | 31337                |
-| REST API    | http://localhost:5000 |
-| Block Time  | 400ms                |
-| Mode        | Standalone validator |
+| Parameter   | Default Value          |
+|-------------|------------------------|
+| REST API    | `http://localhost:5000`|
+| gRPC        | `http://localhost:5001`|
+| P2P         | Port 30303             |
+| Mode        | Standalone validator   |
 
 In standalone mode, the node acts as the sole validator, producing and finalizing blocks locally. This is suitable for development, contract testing, and API exploration.
 
-## Run a 4-Validator Devnet
+## 3. Verify the Node Is Running
 
-For a realistic multi-validator environment with Byzantine Fault Tolerant consensus, use Docker Compose:
+Check the health endpoint to confirm the node is operational:
 
 ```bash
-docker compose up --build
+curl http://localhost:5000/v1/health
 ```
 
-This spins up four validator nodes that discover each other, perform the BFT handshake, and begin producing blocks through the full BasaltBFT consensus pipeline (PROPOSE, PREPARE, PRE-COMMIT, COMMIT).
+Query the node status for detailed information:
 
-### Validator Configuration
+```bash
+curl -s http://localhost:5000/v1/status | jq
+```
+
+The response includes the node's public key, current block height, chain ID, and peer count.
+
+## 4. Create an Account
+
+Generate a new Ed25519 keypair with a Keccak-256 derived address using the CLI:
+
+```bash
+dotnet run --project tools/Basalt.Cli -- account create
+```
+
+This outputs the new address and private key. Store the private key securely -- it is required for signing transactions.
+
+## 5. Check Balance
+
+Query the balance of any address:
+
+```bash
+dotnet run --project tools/Basalt.Cli -- account balance --address <ADDRESS> --node http://localhost:5000
+```
+
+Replace `<ADDRESS>` with the hex-encoded address from the previous step.
+
+## 6. Send a Transaction
+
+Transfer BSLT tokens to another address:
+
+```bash
+dotnet run --project tools/Basalt.Cli -- tx send \
+  --from <PRIVATE_KEY> \
+  --to <RECIPIENT_ADDRESS> \
+  --amount <AMOUNT> \
+  --node http://localhost:5000
+```
+
+The CLI signs the transaction with the provided private key, submits it to the node, and returns the transaction hash.
+
+## 7. Run the 4-Validator Docker DevNet
+
+For a realistic multi-validator environment with full BasaltBFT consensus, use Docker Compose:
+
+```bash
+docker compose up -d
+```
+
+This spins up four validator nodes that discover each other via Kademlia DHT, perform the BFT handshake, and begin producing blocks through the full consensus pipeline (PROPOSE, PREPARE, PRE-COMMIT, COMMIT).
+
+### Validator Port Mapping
 
 | Validator     | REST API Port | P2P Port |
 |---------------|---------------|----------|
@@ -45,92 +104,41 @@ This spins up four validator nodes that discover each other, perform the BFT han
 | validator-2   | 5102          | 30302    |
 | validator-3   | 5103          | 30303    |
 
-### Persistent Storage
-
-Each validator stores its chain data in a Docker volume mapped to `/data/basalt` inside the container:
-
-```
-validator-0-data:/data/basalt
-validator-1-data:/data/basalt
-validator-2-data:/data/basalt
-validator-3-data:/data/basalt
-```
-
-RocksDB data is persisted across container restarts. When a validator rejoins the network, it recovers its state from stored blocks and synchronizes any missed blocks from peers via the state sync protocol before re-entering consensus.
-
-To reset the devnet and start from a fresh genesis:
+### Verify the DevNet
 
 ```bash
-docker compose down -v
-docker compose up --build
-```
-
-## Test It
-
-Once the node or devnet is running, verify everything is working with the following commands.
-
-### Check Node Status
-
-```bash
+# Check validator-0 status
 curl -s http://localhost:5100/v1/status | jq
-```
 
-Expected response includes the node's public key, current block height, chain ID, and peer count.
+# Get the latest block from validator-1
+curl -s http://localhost:5101/v1/blocks/latest | jq
 
-### Get the Latest Block
-
-```bash
-curl -s http://localhost:5100/v1/blocks/latest | jq
-```
-
-Returns the most recently finalized block, including its hash, height, timestamp, transaction count, and state root.
-
-### Request Tokens from the Faucet
-
-The devnet includes a built-in faucet for funding test accounts:
-
-```bash
+# Request test tokens from the faucet
 curl -s -X POST http://localhost:5100/v1/faucet \
   -H "Content-Type: application/json" \
   -d '{"address": "YOUR_ADDRESS_HEX"}' | jq
 ```
 
-The faucet dispenses test BSLT tokens to the specified address. Use this to fund accounts before submitting transactions.
+### Reset the DevNet
 
-## CLI Quick Commands
-
-The Basalt CLI provides a convenient interface for common operations.
-
-### Create an Account
+To tear down the devnet and start from a fresh genesis:
 
 ```bash
-dotnet run --project tools/Basalt.Cli -- account create
+docker compose down -v
+docker compose up -d
 ```
 
-Generates a new Ed25519 keypair and derives a Keccak-256 address. The private key is printed to stdout -- store it securely.
+The `-v` flag removes persistent Docker volumes, ensuring all chain state is cleared.
 
-### Check Balance
+## Default Ports Reference
 
-```bash
-dotnet run --project tools/Basalt.Cli -- account balance --address <ADDRESS> --node http://localhost:5100
-```
-
-### Send a Transfer
-
-```bash
-dotnet run --project tools/Basalt.Cli -- tx send \
-  --from <PRIVATE_KEY> \
-  --to <RECIPIENT_ADDRESS> \
-  --amount 1000 \
-  --node http://localhost:5100
-```
-
-### Query Node Status
-
-```bash
-dotnet run --project tools/Basalt.Cli -- node status --node http://localhost:5100
-```
+| Service   | Standalone Node | DevNet (per validator)     |
+|-----------|-----------------|----------------------------|
+| REST API  | 5000            | 5100, 5101, 5102, 5103     |
+| gRPC      | 5001            | --                         |
+| P2P       | 30303           | 30300, 30301, 30302, 30303 |
 
 ## Next Steps
 
-Now that you have a running network, explore the [Architecture](./architecture) guide to understand how the system is structured, or dive into smart contract development.
+- [Architecture](./architecture) -- Understand the 30-project layered design and how the system is structured.
+- [Smart Contracts](../smart-contracts/overview) -- Write, test, and deploy C# smart contracts with compile-time Roslyn analyzer safety.

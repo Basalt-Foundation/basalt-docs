@@ -21,6 +21,7 @@ const sidebars: SidebarsConfig = {
         'core-concepts/networking',
         'core-concepts/storage',
         'core-concepts/execution',
+        'core-concepts/fee-model',
       ],
     },
     {
@@ -31,8 +32,26 @@ const sidebars: SidebarsConfig = {
         'smart-contracts/getting-started',
         'smart-contracts/sdk-reference',
         'smart-contracts/token-standards',
+        'smart-contracts/policy-hooks',
         'smart-contracts/analyzers',
         'smart-contracts/testing',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Caldera Fusion DEX',
+      items: [
+        'caldera/overview',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Compliance & Privacy',
+      items: [
+        'compliance/overview',
+        'compliance/zk-compliance',
+        'compliance/confidential-transactions',
+        'compliance/identity',
       ],
     },
     {
@@ -42,6 +61,7 @@ const sidebars: SidebarsConfig = {
         'node-operations/running-a-node',
         'node-operations/configuration',
         'node-operations/docker-devnet',
+        'node-operations/rpc-node-mode',
         'node-operations/staking',
       ],
     },
@@ -52,6 +72,7 @@ const sidebars: SidebarsConfig = {
         'apis/rest',
         'apis/grpc',
         'apis/graphql',
+        'apis/websocket',
       ],
     },
     {
@@ -63,24 +84,9 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Bridge',
+      label: 'EVM Bridge',
       items: [
         'bridge/overview',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Compliance',
-      items: [
-        'compliance/overview',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Specifications',
-      items: [
-        'specifications/design-plan',
-        'specifications/technical-spec',
       ],
     },
   ],
